@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ganache --db ganache-db -p 8545",
-    "migrate": "truffle migrate --network development"
+    "start": "ganache --db ganache-db -p 8545 --account=\"0x303f0a2a30dbb42f679b663ecfc8a1251eed90308dad451c9ba5f2e25901bfc8,10000000000000000000000000000000000000000\""
   },
   "keywords": [],
   "author": "",
