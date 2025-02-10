@@ -28,11 +28,12 @@ contract DesignerSupport {
     }
 
     // Retrieve multiple data entries
-    function getAllData(uint256 startIndex, uint256 endIndex) public view returns (string[] memory, string[] memory, uint256[] memory) {
+    function getAllData(uint256 startIndex, uint256 endIndex) public view returns (bytes32[] memory,string[] memory, string[] memory, uint256[] memory) {
         require(endIndex < transactionHashes.length, "Invalid index range");
         require(startIndex <= endIndex, "Start index must be less than or equal to end index");
 
         uint256 size = endIndex - startIndex + 1;
+        bytes32[] memory paginatedTxnHashes = new bytes32[](size);
         string[] memory encryptedHashes = new string[](size);
         string[] memory initialVectors = new string[](size);
         uint256[] memory timeStamps = new uint256[](size);
@@ -40,12 +41,13 @@ contract DesignerSupport {
         for (uint256 i = startIndex; i <= endIndex; i++) {
             bytes32 txHash = transactionHashes[i];
             DataEntry storage entry = dataStore[txHash];
+            paginatedTxnHashes[i] = txHash;
             encryptedHashes[i - startIndex] = entry.encryptedHash;
             initialVectors[i - startIndex] = entry.initialVector;
             timeStamps[i - startIndex] = entry.timeStamp;
         }
 
-        return (encryptedHashes, initialVectors, timeStamps);
+        return (paginatedTxnHashes,encryptedHashes, initialVectors, timeStamps);
     }
 
     // Retrieve a single data entry
